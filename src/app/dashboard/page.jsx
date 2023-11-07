@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './page.module.css';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import {useSession} from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -12,9 +12,14 @@ const Dashboard = () => {
   //console.log(session)
   const router = useRouter();
 
-  const fetcher = (...args) => fetch(...args).then(res => res.json());
-  const {data, mutate, error, isLoading} = useSWR(`/api/posts?username=${session?.data?.user.name}`, fetcher);
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+  const { data, mutate, error, isLoading } = useSWR(
+    `/api/posts?username=${session?.data?.user.name}`,
+    fetcher
+  );
   console.log(data)
+  //console.log(error)
 
   if(session.status === "loading"){
     return <p>Loading...</p>
@@ -24,27 +29,30 @@ const Dashboard = () => {
     router?.push("/dashboard/login")
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const title = e.target[0].value;
     const desc = e.target[1].value;
     const img = e.target[2].value;
     const content = e.target[3].value;
 
-    try{
+    try {
       await fetch("/api/posts", {
         method: "POST",
         body: JSON.stringify({
-          title, desc, img, content, username: session.data.user.name
-        })
+          title,
+          desc,
+          img,
+          content,
+          username: session.data.user.name,
+        }),
       });
       mutate();
-      e.target.reset();
+      e.target.reset()
+    } catch (err) {
+      console.log(err);
     }
-    catch(err){
-      console.log(err)
-    }
-  }
+  };
 
   const handleDelete = async (id) =>{
     try{
@@ -66,7 +74,7 @@ const Dashboard = () => {
       : data?.map((post) => (
         <div className={styles.post} key={post._id}>
         <div className={styles.imgContainer}>
-          <Image src={post.image} alt="" width={200} height={100} />
+          <Image src={post.img} alt="" width={200} height={100} />
         </div>
         <h2 className={styles.postTitle}>{post.title}</h2>
         <span

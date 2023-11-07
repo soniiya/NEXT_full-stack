@@ -5,8 +5,8 @@ import Image from "next/image";
 
 async function getData() {
   const apiurl = process.env.API_URL;
-  
-  const res = await fetch(`${apiurl}/api/posts`, {
+
+  const res = await fetch('http://localhost:3000/api/posts', {
     cache: "no-store"
   })
   
@@ -29,7 +29,7 @@ const Blog = async () => {
       <Link href={`/blog/${item._id}`} key={item.id} className={styles.container} >
         <div className={styles.imageContainer}>
           <Image
-            src={item.image}
+            src={item.img}
             alt="blog-item"
             width={400}
             height={250}
