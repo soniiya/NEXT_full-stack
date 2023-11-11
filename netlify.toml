@@ -1,0 +1,9 @@
+[build]
+command = "npm run build"   # Your build command
+publish = "out"             # Your publish directory (for Next.js, it's usually 'out')
+
+[[plugins]]
+package = "@netlify/plugin-nextjs"
+
+[functions]
+directory = "netlify-functions"   # Replace with your functions directory path
