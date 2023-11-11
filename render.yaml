@@ -9,16 +9,4 @@ services:
         value: ''
     # Add other configurations like region, branch, etc.
 
-  - type: web
-    name: mongodb-service
-    env: docker
-    dockerfilePath: './path/to/Dockerfile'
-    # Define disk size, environment variables, etc.
-    disk:
-      name: mongo-disk
-      sizeGB: 10
-    envVars:
-      - key: MONGO_USERNAME
-        value: soniyajaiswal995
-      - key: MONGO_PASSWORD
-        value: sonia26
+  
